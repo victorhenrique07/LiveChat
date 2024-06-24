@@ -1,0 +1,6 @@
+@LiveChat.Api_HostAddress = http://localhost:5275
+
+GET {{LiveChat.Api_HostAddress}}/api/
+Accept: application/json
+
+###
