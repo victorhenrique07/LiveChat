@@ -1,6 +1,6 @@
 ﻿using LiveChat.Application.Queries;
 using LiveChat.Domain.Models;
-using LiveChat.Infraestructure.Repository.Users;
+using LiveChat.Domain.Repository;
 using MediatR;
 using System;
 using System.Collections.Generic;

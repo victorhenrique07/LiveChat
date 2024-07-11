@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiveChat.Infraestructure.Repository.Users
+namespace LiveChat.Domain.Repository
 {
     public interface IUserRepository
     {
@@ -14,5 +14,6 @@ namespace LiveChat.Infraestructure.Repository.Users
         public Task<User> AddUserAsync(User user);
         public Task<int> UpdateUserAsync(User user);
         public Task<int> DeleteUserAsync(int Id);
+        public Task<User> AuthenticateUserAsync(string email, string password);
     }
 }

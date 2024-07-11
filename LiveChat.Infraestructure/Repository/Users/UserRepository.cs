@@ -1,4 +1,5 @@
 ﻿using LiveChat.Domain.Models;
+using LiveChat.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,12 @@ namespace LiveChat.Infraestructure.Repository.Users
         {
             _dbContextClass.Users.Update(studentDetails);
             return await _dbContextClass.SaveChangesAsync();
+        }
+
+        public async Task<User> AuthenticateUserAsync(string email, string password)
+        {
+            return await _dbContextClass.Users
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower() && u.Password == password);
         }
     }
 }

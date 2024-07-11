@@ -1,5 +1,5 @@
 ﻿using LiveChat.Application.Commands;
-using LiveChat.Infraestructure.Repository.Users;
+using LiveChat.Domain.Repository;
 using MediatR;
 
 namespace LiveChat.Application.Handlers

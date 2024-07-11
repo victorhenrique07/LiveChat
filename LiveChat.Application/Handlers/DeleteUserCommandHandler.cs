@@ -1,4 +1,5 @@
 ﻿using LiveChat.Application.Commands;
+using LiveChat.Domain.Repository;
 using LiveChat.Infraestructure.Repository.Users;
 using MediatR;
 using System;

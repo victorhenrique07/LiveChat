@@ -1,6 +1,6 @@
 ﻿using LiveChat.Application.Commands;
 using LiveChat.Domain.Models;
-using LiveChat.Infraestructure.Repository.Users;
+using LiveChat.Domain.Repository;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,7 @@ namespace LiveChat.Application.Handlers
         }
         public async Task<User> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
-            var studentDetails = new User()
-            {
-                Name = command.Name,
-                Email = command.Email
-            };
+            var studentDetails = new User(command.Name, command.Email, command.Password);
 
             return await _userRepository.AddUserAsync(studentDetails);
         }
