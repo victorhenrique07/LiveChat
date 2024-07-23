@@ -8,9 +8,15 @@ namespace LiveChat.Domain.Models
 {
     public class Message
     {
-        public int Id { get; set; }
-        public User User { get; set; }
+        public User Sender { get; }
+        public User Recipient { get; }
+        public string Content { get; }
 
-        public string Text { get; set; }
+        public Message(User sender, User recipient, string content)
+        {
+            Sender = sender;
+            Recipient = recipient;
+            Content = content;
+        }
     }
 }

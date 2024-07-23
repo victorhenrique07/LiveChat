@@ -34,9 +34,12 @@ namespace LiveChat.Application.Handlers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim(ClaimTypes.Name, currentUser.Email),
-                        new Claim(ClaimTypes.Role, currentUser.Role)
+                        new Claim(ClaimTypes.Role, currentUser.Role),
+                        new Claim(ClaimTypes.NameIdentifier, currentUser.Id.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
+                    Issuer = "https://localhost:7130",
+                    Audience = "https://localhost:7130",
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);

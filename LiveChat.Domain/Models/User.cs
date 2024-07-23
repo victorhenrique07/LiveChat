@@ -10,15 +10,14 @@
 
         public string Password { get; set; }
 
-        public IReadOnlyCollection<Guild>? Guilds { get; set; }
-
         public string Role { get; private set; }
 
-        public User(string name, string email, string password)
+        public User(string name, string email, string password, string role = null)
         {
             Name = name;
             Email = email;
             Password = password;
+            Role = role != null ? role : "user";
         }
     }
 }

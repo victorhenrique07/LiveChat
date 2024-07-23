@@ -23,13 +23,13 @@ namespace LiveChat.Infraestructure
 
             services.AddScoped<IUserRepository, UserRepository>();
 
-            services.AddAuthentication(opt =>
+            services.AddAuthentication(options =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(option =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
-                option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -40,9 +40,29 @@ namespace LiveChat.Infraestructure
                     ValidAudience = configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"])),
-                    ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero // Opcional: Ajusta o tempo de tolerância para expiração do token
+                };
+
+                // Adicione logs para depuração
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        // Log do erro de autenticação
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        // Log quando o token é validado
+                        Console.WriteLine($"Token validated: {context.SecurityToken}");
+                        return Task.CompletedTask;
+                    }
                 };
             });
+
+            services.AddAuthorization();
+            services.AddControllers();
 
             return services;
         }

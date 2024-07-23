@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using LiveChat.Application.Commands;
+using LiveChat.Application.Handlers;
+using LiveChat.Application.Models;
+using LiveChat.Application.Queries;
+using LiveChat.Domain.Models;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +18,11 @@ namespace LiveChat.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddSingleton(new Dictionary<(int, int), Queue<Message>>());
+            services.AddSingleton(new object());
 
-            // Adicione outras dependências da aplicação aqui
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             return services;
         }

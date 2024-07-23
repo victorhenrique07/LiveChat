@@ -1,6 +1,8 @@
-﻿using LiveChat.Application.Commands;
+﻿using LiveChat.Application;
+using LiveChat.Application.Commands;
 using LiveChat.Application.Models;
 using LiveChat.Application.Queries;
+using LiveChat.Domain.Models;
 using LiveChat.Domain.Repository;
 using LiveChat.Infraestructure.Repository.Users;
 using MediatR;
@@ -12,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LiveChat.Api.Controllers
 {
@@ -25,13 +28,10 @@ namespace LiveChat.Api.Controllers
         private readonly IMediator mediator;
         private IConfiguration configuration;
 
-        private readonly IUserRepository userRepository;
-
-        public UserController(IMediator mediator, IConfiguration config, IUserRepository userRepository)
+        public UserController(IMediator mediator, IConfiguration config)
         {
             this.mediator = mediator;
             this.configuration = config;
-            this.userRepository = userRepository;
         }
 
         [HttpGet("all-users")]
@@ -48,6 +48,11 @@ namespace LiveChat.Api.Controllers
         {
             var login = await mediator.Send(command);
 
+            if (login == null)
+            {
+                return Unauthorized("Login failed");
+            }
+
             return Ok(login);
         }
 
@@ -59,18 +64,28 @@ namespace LiveChat.Api.Controllers
             return Ok(studentDetail);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateStudentAsync(int id, string name, string email)
+        [Authorize]
+        [HttpPost("send-message")]
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageCommand command)
         {
-            var isStudentDetailUpdated = await mediator.Send(
-                new UpdateUserCommand(id, name, email));
-            return Ok(isStudentDetailUpdated);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+            command.SenderId = int.Parse(userId);
+
+            var handler = await mediator.Send(command);
+
+            return Ok(handler);
         }
 
-        [HttpDelete]
-        public async Task<int> DeleteStudentAsync(int Id)
+        [Authorize]
+        [HttpGet("get-messages")]
+        public async Task<IActionResult> GetMessages()
         {
-            return await mediator.Send(new DeleteUserCommand() { Id = Id });
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            var messages = await mediator.Send(new GetMessagesQuery() { UserId = int.Parse(userId) });
+
+            return Ok(messages);
         }
     }
 }
