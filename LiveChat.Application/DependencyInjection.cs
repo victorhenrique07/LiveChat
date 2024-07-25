@@ -21,7 +21,6 @@ namespace LiveChat.Application
             services.AddSingleton(new Dictionary<(int, int), Queue<Message>>());
             services.AddSingleton(new object());
 
-
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             return services;

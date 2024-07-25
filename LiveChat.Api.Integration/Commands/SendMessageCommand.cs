@@ -1,15 +1,12 @@
-﻿using LiveChat.Application.Models;
-using LiveChat.Domain.Models;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiveChat.Application.Commands
+namespace LiveChat.Api.Integration.Commands
 {
-    public class SendMessageCommand : IRequest<SendMessageResponse>
+    public class SendMessageCommand
     {
         public string SenderId { get; set; } = "";
         public string RecipientId { get; set; }

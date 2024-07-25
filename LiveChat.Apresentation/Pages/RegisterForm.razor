@@ -1,0 +1,52 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations
+@using LiveChat.Api.Integration.Commands
+@using LiveChat.Api.Integration.Services
+
+@inject UserService userService
+@inject NavigationManager NavigationManager
+
+<h3>Cadastro</h3>
+
+<div class="my-2">
+    <hr>
+    <form action="" method="post" @formname="main" @onsubmit="Submit">
+        <div class="input-group mb-3">
+            Name
+            <InputText @bind-Value="NewUser.Name" />
+        </div>
+
+        <div class="input-group mb-3">
+            E-mail
+            <InputText @bind-Value="NewUser.Email" />
+        </div>
+
+        <div class="input-group mb-3">
+            Password
+            <InputText @bind-Value="NewUser.Password" />
+        </div>
+        <button id="button-addon2" class="btn btn-outline-secondary" type="submit">
+            Register
+        </button>
+        <AntiforgeryToken />
+    </form>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private RegisterUserCommand NewUser { get; set; }
+
+    protected override void OnInitialized() => NewUser ??= new();
+
+    private async Task Submit()
+    {
+        await userService.SignUpService(NewUser);
+
+        MethodToTriggerUrl();
+    }
+
+    void MethodToTriggerUrl()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

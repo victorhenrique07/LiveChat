@@ -1,0 +1,79 @@
+﻿@page "/"
+@page "/login"
+@using System.Threading.Tasks
+@using Blazored.LocalStorage
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using LiveChat.Api.Integration.Responses
+@using LiveChat.Api.Integration.Commands
+@using LiveChat.Api.Integration.Services
+
+@inject ILocalStorageService localStorage
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+@inject UserService userService
+
+<h3>Login</h3>
+
+<div>
+    <div class="input-group mb-3">
+        <label for="username">E-mail</label>
+        <InputText id="username" @bind-Value="User.Email" class="form-control" />
+    </div>
+    <div class="input-group mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" type="password" @bind-Value="User.Password" class="form-control" />
+    </div>
+
+    <button @onclick="Submit" class="btn btn-primary">Login</button>
+    <AntiforgeryToken />
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
+
+    <a style="margin-top: 20px" href="/register">Se cadastra aqui</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginUserCommand User { get; set; } = new LoginUserCommand();
+
+    private string errorMessage;
+    private string authToken;
+
+    private async Task Submit()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("https://localhost:7130/api/login", User);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+                authToken = result.Token;
+
+                await StoreTokenAndRedirect();
+            }
+            else
+            {
+                errorMessage = "Login failed. Please check your credentials.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    private async Task StoreTokenAndRedirect()
+    {
+        if (!string.IsNullOrEmpty(authToken))
+        {
+            await localStorage.SetItemAsync("token", authToken);
+        }
+
+        NavigationManager.NavigateTo("/messages");
+    }
+}

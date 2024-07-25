@@ -36,9 +36,14 @@ namespace LiveChat.Infraestructure.Repository.Users
             return await _dbContextClass.SaveChangesAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(int Id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _dbContextClass.Users.Where(x => x.Id == Id).FirstOrDefaultAsync();
+            return await _dbContextClass.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _dbContextClass.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
         public async Task<List<User>> GetUserListAsync()

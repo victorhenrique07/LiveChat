@@ -1,0 +1,118 @@
+﻿@page "/messages"
+@using System.Threading.Tasks
+@using System.Threading
+@using Blazored.LocalStorage
+@using LiveChat.Api.Integration.Commands
+@using LiveChat.Api.Integration.Responses
+@using LiveChat.Api.Integration.Services
+@using System.Net.Http.Headers
+@using Radzen
+
+@inject ILocalStorageService localStorage
+@inject MessageService messageService
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Messages</h3>
+
+<div>
+    <div class="input-group mb-3">
+        <label for="recipient">Recipient</label>
+        <InputText id="recipient" @bind-Value="Message.RecipientId" class="form-control" />
+    </div>
+    <div class="input-group mb-3">
+        <label for="content">Content</label>
+        <InputTextArea id="content" @bind-Value="Message.Content" class="form-control" />
+    </div>
+
+    <Radzen.Blazor.RadzenButton Click=@(() => Submit()) Text="Save"></Radzen.Blazor.RadzenButton>
+</div>
+
+@if (messages != null && messages.Any())
+{
+    <div>
+        <h4>Recent Messages</h4>
+        <ul>
+            @foreach (var msg in messages)
+            {
+                <p>@msg.Sender.Name: @msg.Content</p>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <p>No messages yet.</p>
+}
+
+@code {
+    private SendMessageCommand Message { get; set; } = new();
+    private string token;
+    private IReadOnlyCollection<MessageResponse> messages = new List<MessageResponse>();
+    private Timer timer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ConfigureHttpClient();
+        StartMessagePolling();
+    }
+
+    private async Task ConfigureHttpClient()
+    {
+        token = await localStorage.GetItemAsync<string>("token");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+    }
+
+    private async Task FetchMessages()
+    {
+        try
+        {
+            Console.WriteLine("Fetching messages...");
+            messages = await messageService.GetMessagesAsync();
+            Console.WriteLine($"Fetched {messages.Count} messages.");
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching messages: {ex.Message}");
+
+        }
+    }
+
+    private void StartMessagePolling()
+    {
+        timer = new Timer(async _ =>
+        {
+            await FetchMessages();
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(2.5));
+    }
+
+    private async Task Submit()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                Console.WriteLine("Token is missing. Redirecting to login.");
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            await messageService.SendMessageAsync(Message);
+
+            Message = new SendMessageCommand();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending message: {ex.Message}");
+        }
+    }
+}

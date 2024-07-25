@@ -33,7 +33,8 @@ namespace LiveChat.Application.Handlers
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, currentUser.Email),
+                        new Claim(ClaimTypes.Email, currentUser.Email),
+                        new Claim(ClaimTypes.Name, currentUser.Name),
                         new Claim(ClaimTypes.Role, currentUser.Role),
                         new Claim(ClaimTypes.NameIdentifier, currentUser.Id.ToString())
                     }),

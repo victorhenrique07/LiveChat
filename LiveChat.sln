@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Domain", "LiveChat.Domain\LiveChat.Domain.csproj", "{CAC56224-3F98-462C-92C9-9D965C6B95E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Domain", "LiveChat.Domain\LiveChat.Domain.csproj", "{CAC56224-3F98-462C-92C9-9D965C6B95E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Infraestructure", "LiveChat.Infraestructure\LiveChat.Infraestructure.csproj", "{7C234D0F-A388-421B-AAA4-A17F31E5779A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Infraestructure", "LiveChat.Infraestructure\LiveChat.Infraestructure.csproj", "{7C234D0F-A388-421B-AAA4-A17F31E5779A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Application", "LiveChat.Application\LiveChat.Application.csproj", "{D9203503-C636-4B94-8373-FC43A694CDE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Application", "LiveChat.Application\LiveChat.Application.csproj", "{D9203503-C636-4B94-8373-FC43A694CDE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Api", "LiveChat.Api\LiveChat.Api.csproj", "{6B87B6E2-B4BB-4DDD-BE6F-39CF17398B78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api", "LiveChat.Api\LiveChat.Api.csproj", "{6B87B6E2-B4BB-4DDD-BE6F-39CF17398B78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api.Integration", "LiveChat.Api.Integration\LiveChat.Api.Integration.csproj", "{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Apresentation", "LiveChat.Apresentation\LiveChat.Apresentation.csproj", "{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{6B87B6E2-B4BB-4DDD-BE6F-39CF17398B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B87B6E2-B4BB-4DDD-BE6F-39CF17398B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B87B6E2-B4BB-4DDD-BE6F-39CF17398B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

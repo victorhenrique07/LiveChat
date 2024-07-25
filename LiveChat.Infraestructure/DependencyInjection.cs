@@ -40,22 +40,18 @@ namespace LiveChat.Infraestructure
                     ValidAudience = configuration["JWT:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"])),
-                    ClockSkew = TimeSpan.Zero // Opcional: Ajusta o tempo de tolerância para expiração do token
+                    ClockSkew = TimeSpan.Zero
                 };
 
-                // Adicione logs para depuração
                 options.Events = new JwtBearerEvents
                 {
                     OnAuthenticationFailed = context =>
                     {
-                        // Log do erro de autenticação
                         Console.WriteLine($"Authentication failed: {context.Exception.Message}");
                         return Task.CompletedTask;
                     },
                     OnTokenValidated = context =>
                     {
-                        // Log quando o token é validado
-                        Console.WriteLine($"Token validated: {context.SecurityToken}");
                         return Task.CompletedTask;
                     }
                 };

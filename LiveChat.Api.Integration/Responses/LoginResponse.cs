@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiveChat.Application.Models
+namespace LiveChat.Api.Integration.Responses
 {
     public class LoginResponse
     {
-        public string? Token { get; set; }
-
+        public string Token { get; set; }
         public string Message { get; set; }
     }
 }

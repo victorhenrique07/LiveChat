@@ -28,10 +28,13 @@ namespace LiveChat.Api.Controllers
         private readonly IMediator mediator;
         private IConfiguration configuration;
 
-        public UserController(IMediator mediator, IConfiguration config)
+        private readonly ILogger<UserController> logger;
+
+        public UserController(IMediator mediator, IConfiguration configuration, ILogger<UserController> logger)
         {
             this.mediator = mediator;
-            this.configuration = config;
+            this.configuration = configuration;
+            this.logger = logger;
         }
 
         [HttpGet("all-users")]
@@ -46,19 +49,30 @@ namespace LiveChat.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
-            var login = await mediator.Send(command);
-
-            if (login == null)
+            if (command.Email.IsNullOrEmpty() || command.Password.IsNullOrEmpty())
             {
                 return Unauthorized("Login failed");
             }
 
+            var login = await mediator.Send(command);
+
+            if (login.Token.IsNullOrEmpty())
+                return Unauthorized("Login failed");
+
+            logger.LogInformation($"User {command.Email} logged with password {command.Password}");
+
             return Ok(login);
         }
 
+        [AllowAnonymous]
         [HttpPost("sign-up")]
         public async Task<IActionResult> AddUserAsync([FromBody] RegisterUserCommand command)
         {
+            if (command == null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
             var studentDetail = await mediator.Send(command);
 
             return Ok(studentDetail);
@@ -68,9 +82,14 @@ namespace LiveChat.Api.Controllers
         [HttpPost("send-message")]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageCommand command)
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (command == null)
+            {
+                return BadRequest("Invalid command.");
+            }
 
-            command.SenderId = int.Parse(userId);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+            command.SenderId = userId;
 
             var handler = await mediator.Send(command);
 
