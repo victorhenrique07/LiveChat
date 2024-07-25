@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api", "LiveChat.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api.Integration", "LiveChat.Api.Integration\LiveChat.Api.Integration.csproj", "{FA53C7F0-C9FD-4985-BFA6-EC205552B8B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChat.Apresentation", "LiveChat.Apresentation\LiveChat.Apresentation.csproj", "{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Apresentation", "LiveChat.Apresentation\LiveChat.Apresentation.csproj", "{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

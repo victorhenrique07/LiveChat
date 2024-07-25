@@ -1,5 +1,6 @@
 ﻿using LiveChat.Application.Commands;
 using LiveChat.Application.Handlers;
+using LiveChat.Application.Mappers;
 using LiveChat.Application.Models;
 using LiveChat.Application.Queries;
 using LiveChat.Domain.Models;
@@ -19,7 +20,10 @@ namespace LiveChat.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddSingleton(new Dictionary<(int, int), Queue<Message>>());
+            services.AddSingleton(new Dictionary<int, IEnumerable<UserResponse>>());
             services.AddSingleton(new object());
+
+            services.AddAutoMapper(typeof(UserMapper));
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 

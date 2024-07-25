@@ -44,5 +44,34 @@ namespace LiveChat.Api.Integration.Services
 
             var statusCode = response.EnsureSuccessStatusCode();
         }
+
+        public async Task<IReadOnlyCollection<UserResponse>?> GetFriendsService()
+        {
+            var response = await httpClient.GetAsync("get-friends");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"Error: {response.StatusCode}, Response: {responseContent}");
+            }
+
+            List<UserResponse>? friends = await response.Content.ReadFromJsonAsync<List<UserResponse>>();
+
+            return friends; 
+        }
+
+        public async Task AddFriendService(AddFriendCommand command)
+        {
+            var response = await httpClient.PostAsJsonAsync("add-friend", command);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error: {response.StatusCode}, Response: {responseContent}");
+            }
+
+            var statusCode = response.EnsureSuccessStatusCode();
+        }
     }
 }

@@ -18,38 +18,38 @@ namespace LiveChat.Application.Handlers
 {
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
-        private readonly Dictionary<(int, int), Queue<Message>> _messageQueues;
+        private readonly Dictionary<(int, int), Queue<Message>> messageQueues;
         private readonly object _lock;
 
         private readonly IUserRepository userRepository;
 
-        public SendMessageCommandHandler(Dictionary<(int, int), Queue<Message>> messageQueues, object lockObject, IUserRepository userRepository)
+        public SendMessageCommandHandler(Dictionary<(int, int), Queue<Message>> messageQueues, object _lock, IUserRepository userRepository)
         {
-            _messageQueues = messageQueues;
-            _lock = lockObject;
+            this.messageQueues = messageQueues;
+            this._lock = _lock;
             this.userRepository = userRepository;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var sender = await userRepository.GetUserByEmailAsync(request.SenderId);
-            var recipient = await userRepository.GetUserByEmailAsync(request.RecipientId);
+            User sender = await userRepository.GetUserByEmailAsync(request.SenderId);
+            User recipient = await userRepository.GetUserByEmailAsync(request.RecipientId);
 
             if (sender == null || recipient == null)
             {
                 throw new NotFoundException(HttpStatusCode.NotFound, "Sender or recipient not found.");
             }
 
-            var message = new Message(sender, recipient, request.Content);
+            Message message = new Message(sender, recipient, request.Content);
             var key = (Math.Min(sender.Id, recipient.Id), Math.Max(sender.Id, recipient.Id));
 
             lock (_lock)
             {
-                if (!_messageQueues.ContainsKey(key))
+                if (!messageQueues.ContainsKey(key))
                 {
-                    _messageQueues[key] = new Queue<Message>();
+                    messageQueues[key] = new Queue<Message>();
                 }
-                _messageQueues[key].Enqueue(message);
+                messageQueues[key].Enqueue(message);
             }
 
             return new SendMessageResponse { Message = "Message sent successfully" };

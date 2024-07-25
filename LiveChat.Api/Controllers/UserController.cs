@@ -106,5 +106,29 @@ namespace LiveChat.Api.Controllers
 
             return Ok(messages);
         }
+
+        [Authorize]
+        [HttpPost("add-friend")]
+        public async Task<IActionResult> AddFriend([FromBody] AddFriendCommand command)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            command.CurrentUserid = int.Parse(userId);
+
+            var friend = await mediator.Send(command);
+
+            return Ok(friend);
+        }
+
+        [Authorize]
+        [HttpGet("get-friends")]
+        public async Task<IActionResult> GetFriends()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            var friends = await mediator.Send(new GetUserFriendsQuery() { CurrentUserId = int.Parse(userId) });
+
+            return Ok(friends);
+        }
     }
 }
