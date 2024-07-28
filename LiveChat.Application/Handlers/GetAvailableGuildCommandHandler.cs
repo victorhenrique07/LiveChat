@@ -48,8 +48,8 @@ namespace LiveChat.Application.Handlers
                     {
                         SenderName = x.Sender.Name,
                         Content = x.Content,
-                    })
-                })
+                    }).ToList()
+                }).ToList()
             };
 
             return guildResponse;

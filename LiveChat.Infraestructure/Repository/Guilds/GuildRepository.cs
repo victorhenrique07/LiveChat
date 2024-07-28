@@ -88,5 +88,10 @@ namespace LiveChat.Infraestructure.Repository.Guilds
 
             return Channel;
         }
+
+        public async Task<Channel> GetAvailableChannel(int GuildId, int ChannelId)
+        {
+            return await dbContextClass.Channels.FirstOrDefaultAsync(x => x.Id == ChannelId && x.GuildId == GuildId);
+        }
     }
 }

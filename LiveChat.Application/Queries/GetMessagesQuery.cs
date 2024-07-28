@@ -1,4 +1,5 @@
-﻿using LiveChat.Domain.Models;
+﻿using LiveChat.Application.Models;
+using LiveChat.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace LiveChat.Application.Queries
 {
-    public class GetMessagesQuery : IRequest<IEnumerable<Message>>
+    public class GetMessagesQuery : IRequest<ChannelResponse>
     {
-        public int UserId { get; set; }
+        public int ChannelId { get; set; }
+        public int GuildId { get; set; }
     }
 }

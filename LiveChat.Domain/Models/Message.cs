@@ -23,10 +23,11 @@ namespace LiveChat.Domain.Models
 
         public Channel Channel { get; set; } 
 
-        public Message(User sender, string content)
+        public Message(User sender, string content, Channel channel)
         {
             Sender = sender;
             Content = content;
+            Channel = channel;
         }
 
         public Message() { }

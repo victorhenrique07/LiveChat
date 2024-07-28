@@ -85,5 +85,16 @@ namespace LiveChat.Api.Controllers
 
             return Ok(handler);
         }
+
+        [Authorize]
+        [HttpGet("guilds/{guildId}/channels/{channelId}/messages")]
+        public async Task<IActionResult> GetMessages(int guildId, int channelId)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            var messages = await mediator.Send(new GetMessagesQuery() { ChannelId = channelId, GuildId = guildId });
+
+            return Ok(messages);
+        }
     }
 }

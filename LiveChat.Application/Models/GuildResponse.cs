@@ -12,6 +12,6 @@ namespace LiveChat.Application.Models
         public string Name { get; set; }
         public UserResponse Owner { get; set; }
         public IReadOnlyCollection<UserResponse>? Members { get; set; }
-        public IEnumerable<ChannelResponse>? Channels { get; set; }
+        public IReadOnlyCollection<ChannelResponse>? Channels { get; set; }
     }
 }

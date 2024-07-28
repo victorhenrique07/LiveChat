@@ -16,5 +16,6 @@ namespace LiveChat.Domain.Repository
         public Task<User> UpdateMemberRoleAsync(User user);
         public Task<IReadOnlyCollection<GuildMember>> DeleteUserAsync(User User, Guild Guild);
         public Task<Channel> CreateNewChannel(Channel Channel);
+        public Task<Channel> GetAvailableChannel(int GuildId, int ChannelId);
     }
 }

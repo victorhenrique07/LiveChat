@@ -22,26 +22,28 @@ namespace LiveChat.Application.Handlers
         private readonly object _lock;
 
         private readonly IUserRepository userRepository;
+        private readonly IGuildRepository guildRepository;
 
-        public SendMessageCommandHandler(Dictionary<(int, int), Queue<Message>> messageQueues, object _lock, IUserRepository userRepository)
+        public SendMessageCommandHandler(Dictionary<(int, int), Queue<Message>> messageQueues, object _lock, IUserRepository userRepository, IGuildRepository guildRepository)
         {
             this.messageQueues = messageQueues;
             this._lock = _lock;
             this.userRepository = userRepository;
+            this.guildRepository = guildRepository;
         }
 
-        public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+        public async Task<SendMessageResponse> Handle(SendMessageCommand command, CancellationToken cancellationToken)
         {
-            User sender = await userRepository.GetUserByEmailAsync(request.SenderId);
-            User recipient = await userRepository.GetUserByEmailAsync(request.RecipientId);
+            User sender = await userRepository.GetUserByEmailAsync(command.SenderId);
+            Channel channel = await guildRepository.GetAvailableChannel(command.GuildId, command.ChannelId);
 
-            if (sender == null || recipient == null)
+            if (sender == null || command == null)
             {
-                throw new NotFoundException(HttpStatusCode.NotFound, "Sender or recipient not found.");
+                throw new NotFoundException(HttpStatusCode.NotFound, "Sender or Channel not found.");
             }
 
-            Message message = new Message(sender, request.Content);
-            var key = (Math.Min(sender.Id, recipient.Id), Math.Max(sender.Id, recipient.Id));
+            Message message = new Message(sender, command.Content, channel);
+            var key = (Math.Min(sender.Id, command.ChannelId), Math.Max(sender.Id, command.ChannelId));
 
             lock (_lock)
             {

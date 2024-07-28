@@ -10,6 +10,6 @@ namespace LiveChat.Application.Models
     {
         public string Name { get; set; }
 
-        public IEnumerable<MessageResponse> Messages { get; set; }
+        public IReadOnlyCollection<MessageResponse> Messages { get; set; }
     }
 }

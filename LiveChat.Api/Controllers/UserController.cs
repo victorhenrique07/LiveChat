@@ -94,17 +94,6 @@ namespace LiveChat.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet("get-messages")]
-        public async Task<IActionResult> GetMessages()
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            var messages = await mediator.Send(new GetMessagesQuery() { UserId = int.Parse(userId) });
-
-            return Ok(messages);
-        }
-
-        [Authorize]
         [HttpPost("add-friend")]
         public async Task<IActionResult> AddFriend([FromBody] AddFriendCommand command)
         {
