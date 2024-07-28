@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api.Integration", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Apresentation", "LiveChat.Apresentation\LiveChat.Apresentation.csproj", "{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{25027E36-A246-42F4-B561-A5C83343F33F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25027E36-A246-42F4-B561-A5C83343F33F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25027E36-A246-42F4-B561-A5C83343F33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25027E36-A246-42F4-B561-A5C83343F33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25027E36-A246-42F4-B561-A5C83343F33F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
