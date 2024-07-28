@@ -40,7 +40,7 @@ namespace LiveChat.Application.Handlers
                 throw new NotFoundException(HttpStatusCode.NotFound, "Sender or recipient not found.");
             }
 
-            Message message = new Message(sender, recipient, request.Content);
+            Message message = new Message(sender, request.Content);
             var key = (Math.Min(sender.Id, recipient.Id), Math.Max(sender.Id, recipient.Id));
 
             lock (_lock)

@@ -4,6 +4,7 @@ using LiveChat.Apresentation;
 using LiveChat.Apresentation.Auth;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Syncfusion.Blazor;
 using System;
 using System.Net.Http;
 
@@ -12,6 +13,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSyncfusionBlazor();
 
 builder.Services.AddScoped(sp =>
 {

@@ -23,7 +23,6 @@ namespace LiveChat.Api.Controllers
     public class UserController : ControllerBase
     {
         private const string TokenSecret = "bXlhcHB2ZXJ5c3Ryb25nc2VjcmV0a2V5MTIzNDU2";
-        private static readonly TimeSpan TokenLifeTime = TimeSpan.FromHours(8);
 
         private readonly IMediator mediator;
         private IConfiguration configuration;
@@ -83,9 +82,7 @@ namespace LiveChat.Api.Controllers
         public async Task<IActionResult> SendMessage([FromBody] SendMessageCommand command)
         {
             if (command == null)
-            {
                 return BadRequest("Invalid command.");
-            }
 
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
 

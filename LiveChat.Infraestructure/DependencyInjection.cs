@@ -1,5 +1,6 @@
 ﻿using LiveChat.Domain.Models;
 using LiveChat.Domain.Repository;
+using LiveChat.Infraestructure.Repository.Guilds;
 using LiveChat.Infraestructure.Repository.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace LiveChat.Infraestructure
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGuildRepository, GuildRepository>();
 
             services.AddAuthentication(options =>
             {

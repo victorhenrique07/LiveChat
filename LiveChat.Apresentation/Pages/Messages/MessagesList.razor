@@ -7,19 +7,21 @@
 @using LiveChat.Api.Integration.Services
 @using System.Net.Http.Headers
 @using Radzen
+@using Syncfusion.Blazor.DropDowns
 
 @inject ILocalStorageService localStorage
 @inject MessageService messageService
+@inject UserService userService
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
 <h3>Messages</h3>
 
 <div>
-    <div class="input-group mb-3">
-        <label for="recipient">Recipient</label>
-        <InputText id="recipient" @bind-Value="Message.RecipientId" class="form-control" />
-    </div>
+    <SfDropDownList @bind-Value="@Message.RecipientId" TValue="string" TItem="UserResponse" Width="300px" FilterType="FilterType.EndsWith" AllowFiltering=true Placeholder="Select a game" DataSource="@friends">
+        <DropDownListFieldSettings Value="Email" Text="Email"></DropDownListFieldSettings>
+    </SfDropDownList>
+
     <div class="input-group mb-3">
         <label for="content">Content</label>
         <InputTextArea id="content" @bind-Value="Message.Content" class="form-control" />
@@ -47,13 +49,15 @@ else
 
 @code {
     private SendMessageCommand Message { get; set; } = new();
-    private string token;
     private IReadOnlyCollection<MessageResponse> messages = new List<MessageResponse>();
+    private IReadOnlyCollection<UserResponse> friends = null;
+    private string token;
     private Timer timer;
 
     protected override async Task OnInitializedAsync()
     {
         await ConfigureHttpClient();
+        friends = await userService.GetFriendsService();
         StartMessagePolling();
     }
 

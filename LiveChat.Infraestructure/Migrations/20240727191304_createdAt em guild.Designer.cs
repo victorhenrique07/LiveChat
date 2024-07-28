@@ -3,6 +3,7 @@ using System;
 using LiveChat.Infraestructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LiveChat.Infraestructure.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    partial class DbContextClassModelSnapshot : ModelSnapshot
+    [Migration("20240727191304_createdAt em guild")]
+    partial class createdAtemguild
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,10 +36,6 @@ namespace LiveChat.Infraestructure.Migrations
                     b.Property<int>("GuildId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GuildId");
@@ -53,7 +52,7 @@ namespace LiveChat.Infraestructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,15 +70,15 @@ namespace LiveChat.Infraestructure.Migrations
 
             modelBuilder.Entity("LiveChat.Domain.Models.GuildMember", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("GuildId")
                         .HasColumnType("integer");
 
-                    b.HasKey("UserId", "GuildId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("GuildId");
+                    b.HasKey("GuildId", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("GuildMembers");
                 });
@@ -162,21 +161,17 @@ namespace LiveChat.Infraestructure.Migrations
 
             modelBuilder.Entity("LiveChat.Domain.Models.GuildMember", b =>
                 {
-                    b.HasOne("LiveChat.Domain.Models.Guild", "Guild")
-                        .WithMany("Members")
+                    b.HasOne("LiveChat.Domain.Models.Guild", null)
+                        .WithMany()
                         .HasForeignKey("GuildId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LiveChat.Domain.Models.User", "User")
-                        .WithMany("Guilds")
+                    b.HasOne("LiveChat.Domain.Models.User", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Guild");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LiveChat.Domain.Models.Message", b =>
@@ -206,13 +201,6 @@ namespace LiveChat.Infraestructure.Migrations
             modelBuilder.Entity("LiveChat.Domain.Models.Guild", b =>
                 {
                     b.Navigation("Channels");
-
-                    b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("LiveChat.Domain.Models.User", b =>
-                {
-                    b.Navigation("Guilds");
                 });
 #pragma warning restore 612, 618
         }

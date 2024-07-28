@@ -3,6 +3,7 @@ using System;
 using LiveChat.Infraestructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LiveChat.Infraestructure.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    partial class DbContextClassModelSnapshot : ModelSnapshot
+    [Migration("20240726062557_Adding more tables")]
+    partial class Addingmoretables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,12 +33,8 @@ namespace LiveChat.Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GuildId")
+                    b.Property<int?>("GuildId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -52,36 +51,13 @@ namespace LiveChat.Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
-
                     b.ToTable("Guilds");
-                });
-
-            modelBuilder.Entity("LiveChat.Domain.Models.GuildMember", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("GuildId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "GuildId");
-
-                    b.HasIndex("GuildId");
-
-                    b.ToTable("GuildMembers");
                 });
 
             modelBuilder.Entity("LiveChat.Domain.Models.Message", b =>
@@ -92,21 +68,12 @@ namespace LiveChat.Infraestructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChannelId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SenderId")
+                    b.Property<int?>("ChannelId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChannelId");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -123,6 +90,9 @@ namespace LiveChat.Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("GuildId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -137,65 +107,30 @@ namespace LiveChat.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GuildId");
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LiveChat.Domain.Models.Channel", b =>
                 {
-                    b.HasOne("LiveChat.Domain.Models.Guild", "Guild")
+                    b.HasOne("LiveChat.Domain.Models.Guild", null)
                         .WithMany("Channels")
                         .HasForeignKey("GuildId");
-
-                    b.Navigation("Guild");
-                });
-
-            modelBuilder.Entity("LiveChat.Domain.Models.Guild", b =>
-                {
-                    b.HasOne("LiveChat.Domain.Models.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("LiveChat.Domain.Models.GuildMember", b =>
-                {
-                    b.HasOne("LiveChat.Domain.Models.Guild", "Guild")
-                        .WithMany("Members")
-                        .HasForeignKey("GuildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LiveChat.Domain.Models.User", "User")
-                        .WithMany("Guilds")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Guild");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LiveChat.Domain.Models.Message", b =>
                 {
-                    b.HasOne("LiveChat.Domain.Models.Channel", "Channel")
+                    b.HasOne("LiveChat.Domain.Models.Channel", null)
                         .WithMany("Messages")
-                        .HasForeignKey("ChannelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChannelId");
+                });
 
-                    b.HasOne("LiveChat.Domain.Models.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Channel");
-
-                    b.Navigation("Sender");
+            modelBuilder.Entity("LiveChat.Domain.Models.User", b =>
+                {
+                    b.HasOne("LiveChat.Domain.Models.Guild", null)
+                        .WithMany("Members")
+                        .HasForeignKey("GuildId");
                 });
 
             modelBuilder.Entity("LiveChat.Domain.Models.Channel", b =>
@@ -208,11 +143,6 @@ namespace LiveChat.Infraestructure.Migrations
                     b.Navigation("Channels");
 
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("LiveChat.Domain.Models.User", b =>
-                {
-                    b.Navigation("Guilds");
                 });
 #pragma warning restore 612, 618
         }

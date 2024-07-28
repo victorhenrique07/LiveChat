@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,15 +9,26 @@ namespace LiveChat.Domain.Models
 {
     public class Message
     {
-        public User Sender { get; }
-        public User Recipient { get; }
-        public string Content { get; }
+        public int Id { get; private set; }
 
-        public Message(User sender, User recipient, string content)
+        public int SenderId { get; set; }
+
+        [Required]
+        public User Sender { get; set; }
+
+        [Required]
+        public string Content { get; set; }
+
+        public int ChannelId { get; set; }
+
+        public Channel Channel { get; set; } 
+
+        public Message(User sender, string content)
         {
             Sender = sender;
-            Recipient = recipient;
             Content = content;
         }
+
+        public Message() { }
     }
 }

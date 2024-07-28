@@ -9,10 +9,12 @@ namespace LiveChat.Domain.Repository
 {
     public interface IGuildRepository
     {
+        public Task<Guild> CreateNewGuild(Guild guild);
         public Task<List<Guild>> GetAvailableGuilds();
-        public Task<User> GetUserByIdAsync(int Id);
-        public Task<User> AddUserAsync(User user);
-        public Task<int> UpdateUserAsync(User user);
-        public Task<int> DeleteUserAsync(int Id);
+        public Task<Guild> GetAvailableGuild(int Id);
+        public Task<IReadOnlyCollection<GuildMember>> AddMemberAsync(User User, Guild Guild);
+        public Task<User> UpdateMemberRoleAsync(User user);
+        public Task<IReadOnlyCollection<GuildMember>> DeleteUserAsync(User User, Guild Guild);
+        public Task<Channel> CreateNewChannel(Channel Channel);
     }
 }
