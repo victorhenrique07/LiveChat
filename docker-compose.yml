@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}livechatapi
     build:
       context: .
-      dockerfile: LiveChat.Api\Dockerfile
+      dockerfile: LiveChat.Api/Dockerfile
