@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Api.Integration", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveChat.Apresentation", "LiveChat.Apresentation\LiveChat.Apresentation.csproj", "{67DF6D1C-0F99-4BA6-839A-FFE5EE46B055}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BAF57DF0-03E6-4728-B859-AC16B9617068}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker", "docker.dcproj", "{BAF57DF0-03E6-4728-B859-AC16B9617068}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

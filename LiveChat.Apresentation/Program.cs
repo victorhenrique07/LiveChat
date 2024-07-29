@@ -25,7 +25,7 @@ builder.Services.AddScoped(sp =>
 
     return new HttpClient(tokenHandler)
     {
-        BaseAddress = new Uri("https://localhost:7130/api/")
+        BaseAddress = new Uri("https://livechat-api.up.railway.app/api/")
     };
 });
 
