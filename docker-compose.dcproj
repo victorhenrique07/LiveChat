@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>25027e36-a246-42f4-b561-a5c83343f33f</ProjectGuid>
+    <ProjectGuid>baf57df0-03e6-4728-b859-ac16b9617068</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>livechat.api</DockerServiceName>
@@ -15,5 +15,6 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="Dockerfile" />
   </ItemGroup>
 </Project>
